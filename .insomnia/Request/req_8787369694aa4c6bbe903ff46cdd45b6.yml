@@ -1,0 +1,34 @@
+_id: req_8787369694aa4c6bbe903ff46cdd45b6
+type: Request
+parentId: fld_f070726d42ad4bdbb4cdb923e665d31e
+modified: 1673465760882
+created: 1673465613450
+url: "{{ _.URL }}/products"
+name: createProduct
+description: ""
+method: POST
+body:
+  mimeType: application/json
+  text: |-
+    {
+    	"title":"prueba",
+    	"price":10,
+    	"description":"prueba",
+    	"slug":"dd",
+    	"stock":40,
+    	"sizes":["Hola"],
+    	"gender":"men"
+    }
+parameters: []
+headers:
+  - name: Content-Type
+    value: application/json
+authentication: {}
+metaSortKey: -1673453778568.5
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global
