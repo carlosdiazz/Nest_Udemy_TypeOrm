@@ -30,14 +30,22 @@ Este es un projecto de prueba con el curso de Udemy de Fernando Herrera
 
 ```bash
 $ npm install
+$ docker-compose up -d
 ```
 
 ## Librerias Usadas
 
   - npm i @nestjs/config
   - npm install --save @nestjs/typeorm typeorm pg
+  - npm i joi
+  - npm i dotenv
+  - npm i class-validator class-transformer
 
 ## Todos los pasos
 
 1 - Primero creo el docker compose para montar la base de datos
 2 - Luego isntalo el paquete para leer variables de entorno, y lo importo en App.Module
+
+## Migraciones
+- npm run pg:generate-mg
+- npm run pg:run-mg
