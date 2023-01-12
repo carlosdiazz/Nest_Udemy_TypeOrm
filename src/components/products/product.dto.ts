@@ -2,6 +2,7 @@ import {
   IsArray,
   IsIn,
   IsNumber,
+  IsOptional,
   IsPositive,
   IsString,
   MinLength,
@@ -39,3 +40,15 @@ export class CreateProductDto {
 }
 
 export class UpdateProductDto extends PartialType(CreateProductDto) {}
+
+export class PaginationDto {
+  @IsOptional()
+  @IsNumber()
+  @IsPositive()
+  limit?: number;
+
+  @IsOptional()
+  @IsNumber()
+  @IsPositive()
+  offset?: number;
+}

@@ -10,6 +10,7 @@ async function bootstrap() {
     new ValidationPipe({
       whitelist: true, //Si envio parametros que esten demas, el backend no lo va a recibir
       forbidNonWhitelisted: false, //Aqui si me llegan paramtros demas aviso el error
+      transform: true,
       transformOptions: {
         enableImplicitConversion: true, //Aqui transformo para que los query me lleguen en su formato
       },
