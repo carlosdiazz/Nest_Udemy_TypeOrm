@@ -1,7 +1,7 @@
 _id: req_8787369694aa4c6bbe903ff46cdd45b6
 type: Request
 parentId: fld_f070726d42ad4bdbb4cdb923e665d31e
-modified: 1673465760882
+modified: 1673555871384
 created: 1673465613450
 url: "{{ _.URL }}/products"
 name: createProduct
@@ -11,10 +11,10 @@ body:
   mimeType: application/json
   text: |-
     {
-    	"title":"prueba",
+    	"title":"prueba 2",
     	"price":10,
     	"description":"prueba",
-    	"slug":"dd",
+    	"slug":"dd_2",
     	"stock":40,
     	"sizes":["Hola"],
     	"gender":"men"
