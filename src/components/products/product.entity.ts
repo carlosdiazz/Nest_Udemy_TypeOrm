@@ -5,7 +5,9 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   BeforeInsert,
+  OneToMany,
 } from 'typeorm';
+import { ProductImage } from './product_image.entity';
 
 @Entity({ name: 'products' })
 export class Product {
@@ -32,6 +34,16 @@ export class Product {
 
   @Column({ type: 'text' })
   gender: string;
+
+  @Column({ type: 'varchar', array: true, nullable: true })
+  tags: string[];
+
+  //Con eager true, hago que automaticamente se busque con el metodo find se relacione solo
+  @OneToMany(() => ProductImage, (ProductImage) => ProductImage.product, {
+    cascade: true,
+    eager: true,
+  })
+  images?: ProductImage[];
 
   @CreateDateColumn({
     name: 'create_at',

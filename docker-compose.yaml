@@ -18,7 +18,7 @@ services:
     image: dpage/pgadmin4
     environment:
       - PGADMIN_DEFAULT_EMAIL=carlos@mail.com
-      - PGADMIN_DEFAULT_PASSWORD=123456
+      - PGADMIN_DEFAULT_PASSWORD=1234
     ports:
       - '5050:80'
     depends_on:

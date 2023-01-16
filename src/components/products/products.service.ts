@@ -5,7 +5,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, DataSource } from 'typeorm';
 
 import {
   CreateProductDto,
@@ -13,6 +13,7 @@ import {
   PaginationDto,
 } from './product.dto';
 import { Product } from './product.entity';
+import { ProductImage } from './product_image.entity';
 
 @Injectable()
 export class ProductsService {
@@ -21,11 +22,22 @@ export class ProductsService {
   constructor(
     @InjectRepository(Product)
     private readonly productRepository: Repository<Product>,
+    @InjectRepository(ProductImage)
+    private readonly productImageRepository: Repository<ProductImage>,
+
+    private readonly dataSource: DataSource,
   ) {}
 
   async create(data: CreateProductDto) {
     try {
-      const newProduct = this.productRepository.create(data);
+      const { images = [], ...productDetails } = data;
+
+      const newProduct = this.productRepository.create({
+        ...productDetails,
+        images: images.map((image) =>
+          this.productImageRepository.create({ url: image }),
+        ),
+      });
       return await this.productRepository.save(newProduct);
     } catch (error) {
       //console.log(error);
@@ -42,6 +54,9 @@ export class ProductsService {
     return this.productRepository.findAndCount({
       take: limit,
       skip: offset,
+      relations: {
+        images: {},
+      },
     });
   }
 
@@ -56,7 +71,35 @@ export class ProductsService {
   }
 
   async update(id: string, updateProductDto: UpdateProductDto) {
-    return `This action updates a #${id} product`;
+    //const product = await this.findOne(id);
+    //try {
+    //  this.productRepository.merge(product, {
+    //    ...updateProductDto,
+    //    images: [],
+    //  });
+    //  return await this.productRepository.save(product);
+    //} catch (error) {
+    //  this.logger.error(error);
+    //  throw new BadRequestException();
+    //}
+
+    const { images, ...toUpdate } = updateProductDto;
+
+    const product = await this.productRepository.preload({
+      id: id,
+      ...toUpdate,
+    });
+    if (!product) throw new NotFoundException();
+
+    // Create quary runner
+    const queryRunner = this.dataSource.createQueryRunner;
+
+    try {
+      return await this.productRepository.save(product);
+    } catch (error) {
+      this.logger.error(error);
+      throw new BadRequestException();
+    }
   }
 
   async remove(id: string) {
