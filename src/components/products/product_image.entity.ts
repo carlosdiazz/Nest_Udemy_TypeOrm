@@ -15,8 +15,11 @@ export class ProductImage {
   @Column({ type: 'varchar', unique: true })
   url: string;
 
-  //Relacion de mucho a uno... coloco JoinColumn para especificar el nombre de la columna que tendra la relacion
-  @ManyToOne(() => Product, (product) => product.images)
+  //Relacion de mucho a 3duno... coloco JoinColumn para especificar el nombre de la columna que tendra la relacion
+  //Al colocar casda si borro su relacion se borra tambien
+  @ManyToOne(() => Product, (product) => product.images, {
+    onDelete: 'CASCADE',
+  })
   @JoinColumn({ name: 'product_id' })
   product: Product;
 }

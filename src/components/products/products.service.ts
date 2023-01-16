@@ -70,6 +70,7 @@ export class ProductsService {
     return product;
   }
 
+  //Aqui manejo la actualizacion con QueryRunner, ejecuto las operaciones y si todo sale bien, la aplico, si algo fallo doy para atras a todo
   async update(id: string, updateProductDto: UpdateProductDto) {
     //const product = await this.findOne(id);
     //try {
@@ -92,18 +93,42 @@ export class ProductsService {
     if (!product) throw new NotFoundException();
 
     // Create quary runner
-    const queryRunner = this.dataSource.createQueryRunner;
+    const queryRunner = this.dataSource.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
 
     try {
-      return await this.productRepository.save(product);
+      if (images) {
+        await queryRunner.manager.delete(ProductImage, { product: { id } });
+        product.images = images.map((image) =>
+          this.productImageRepository.create({ url: image }),
+        );
+      } else {
+        product.images = await this.productImageRepository.findBy({
+          product: { id },
+        });
+      }
+      await queryRunner.manager.save(product);
+      await queryRunner.commitTransaction();
+      await queryRunner.release();
+      return product;
+      //return await this.productRepository.save(product);
     } catch (error) {
+      await queryRunner.rollbackTransaction();
+      await queryRunner.release();
+
       this.logger.error(error);
       throw new BadRequestException();
     }
   }
 
   async remove(id: string) {
-    await this.findOne(id);
-    return this.productRepository.delete(id);
+    try {
+      await this.findOne(id);
+      return await this.productRepository.delete(id);
+    } catch (error) {
+      this.logger.error(error);
+      throw new BadRequestException();
+    }
   }
 }
