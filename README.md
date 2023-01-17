@@ -40,6 +40,7 @@ $ docker-compose up -d
   - npm i joi
   - npm i dotenv
   - npm i class-validator class-transformer
+  - npm i -D @types/multer
 
 ## Todos los pasos
 
