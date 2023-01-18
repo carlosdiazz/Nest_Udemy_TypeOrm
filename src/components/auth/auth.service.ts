@@ -2,15 +2,18 @@ import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
+import { JwtService } from '@nestjs/jwt';
 
 import { CreateUserDto, LoginUserDto } from './dto/user.dto';
 import { User } from './entities/user.entity';
+import { JwtPayload } from './interface/jwt_payload.interface';
 
 @Injectable()
 export class AuthService {
   private readonly logger = new Logger('AuthService');
   constructor(
     @InjectRepository(User) private readonly userRepository: Repository<User>,
+    private readonly jwtService: JwtService,
   ) {}
 
   async create(createUserDto: CreateUserDto) {
@@ -38,5 +41,9 @@ export class AuthService {
       },
     });
     return user;
+  }
+
+  private getJwtToken(payload: JwtPayload) {
+    const token = this.jwtService.sign(payload);
   }
 }

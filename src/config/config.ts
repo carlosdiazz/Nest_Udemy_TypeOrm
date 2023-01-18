@@ -9,6 +9,8 @@ export const config = registerAs('config', () => {
       dbPassword: process.env.POSTGRES_PASSWORD,
       dbPort: Number(process.env.DB_PORT),
       dbHost: process.env.DB_HOST,
+    },
+    JWT: {
       JWT_SECRET: process.env.JWT_SECRET,
       JWT_EXPIRE: process.env.JWT_EXPIRE,
     },
