@@ -9,6 +9,8 @@ export const config = registerAs('config', () => {
       dbPassword: process.env.POSTGRES_PASSWORD,
       dbPort: Number(process.env.DB_PORT),
       dbHost: process.env.DB_HOST,
+      JWT_SECRET: process.env.JWT_SECRET,
+      JWT_EXPIRE: process.env.JWT_EXPIRE,
     },
   };
 });
@@ -20,6 +22,8 @@ export const validationENV = () => {
     POSTGRES_PASSWORD: Joi.string().required(),
     DB_PORT: Joi.string().required(),
     DB_HOST: Joi.string().required(),
+    JWT_SECRET: Joi.string().required(),
+    JWT_EXPIRE: Joi.string().required(),
   });
 };
 

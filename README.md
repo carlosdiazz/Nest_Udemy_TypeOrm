@@ -41,6 +41,9 @@ $ docker-compose up -d
   - npm i dotenv
   - npm i class-validator class-transformer
   - npm i -D @types/multer
+  - npm install --save @nestjs/passport passport 
+  - npm install --save @nestjs/jwt passport-jwt
+  - npm install --save-dev @types/passport-jwt
 
 ## Todos los pasos
 
