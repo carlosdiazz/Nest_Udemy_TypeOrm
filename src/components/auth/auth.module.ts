@@ -38,11 +38,11 @@ import { JwtStrategy } from './strategies/jwt.strategy';
     JwtModule.registerAsync({
       inject: [config.KEY],
       useFactory: (configService: ConfigType<typeof config>) => {
-        console.log(configService.JWT.JWT_SECRET);
+        //console.log(configService.JWT.JWT_SECRET);
         return {
           secret: configService.JWT.JWT_SECRET,
           signOptions: {
-            expiresIn: configService.JWT.JWT_SECRET,
+            expiresIn: configService.JWT.JWT_EXPIRE,
           },
         };
       },
