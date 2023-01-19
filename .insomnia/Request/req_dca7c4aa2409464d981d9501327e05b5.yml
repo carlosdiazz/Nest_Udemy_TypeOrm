@@ -1,0 +1,29 @@
+_id: req_dca7c4aa2409464d981d9501327e05b5
+type: Request
+parentId: fld_74e94500d1fa41d1959a314f80adb5c5
+modified: 1674161885905
+created: 1674161828559
+url: "{{ _.URL }}/auth/login"
+name: LoginUser
+description: ""
+method: POST
+body:
+  mimeType: application/json
+  text: |-
+    {
+    	"email":"c.diazadrian@hotmail.com",
+    	"password":"1DEenero"
+    }
+parameters: []
+headers:
+  - name: Content-Type
+    value: application/json
+authentication: {}
+metaSortKey: -1674161828559
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global
