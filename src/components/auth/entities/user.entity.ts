@@ -1,5 +1,11 @@
 import { Exclude } from 'class-transformer';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  BeforeInsert,
+  BeforeUpdate,
+  Column,
+  Entity,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity({ name: 'users' })
 export class User {
@@ -21,4 +27,14 @@ export class User {
 
   @Column({ type: 'varchar', array: true, default: ['user'] })
   roles: string[];
+
+  @BeforeInsert()
+  checkEmail() {
+    this.email = this.email.toLowerCase().trim();
+  }
+
+  @BeforeUpdate()
+  checkEmaielUpdate() {
+    this.email = this.email.toLowerCase().trim();
+  }
 }

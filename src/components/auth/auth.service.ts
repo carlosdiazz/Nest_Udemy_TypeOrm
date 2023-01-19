@@ -1,4 +1,9 @@
-import { BadRequestException, Injectable, Logger } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  Logger,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
@@ -37,13 +42,22 @@ export class AuthService {
       where: { email },
       select: {
         password: false,
-        email: true,
+        email: false,
+        id: true,
       },
     });
-    return user;
+    console.log(user);
+    if (!user) {
+      throw new NotFoundException('Este user no existe');
+    }
+    return {
+      ...user,
+      token: this.getJwtToken({ id: user.id }),
+    };
   }
 
   private getJwtToken(payload: JwtPayload) {
     const token = this.jwtService.sign(payload);
+    return token;
   }
 }
