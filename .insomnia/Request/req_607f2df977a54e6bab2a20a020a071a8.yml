@@ -1,0 +1,31 @@
+_id: req_607f2df977a54e6bab2a20a020a071a8
+type: Request
+parentId: fld_74e94500d1fa41d1959a314f80adb5c5
+modified: 1674164732084
+created: 1674163298820
+url: "{{ _.URL }}/auth/private"
+name: testintPrivate
+description: ""
+method: GET
+body:
+  mimeType: application/json
+  text: |-
+    {
+    	"email":"c.diazadrian@hotmail.com",
+    	"password":"1DEenero"
+    }
+parameters: []
+headers:
+  - name: Content-Type
+    value: application/json
+authentication:
+  type: bearer
+  token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2NzQxNjQ3MDUsImV4cCI6MTY3NDI1MTEwNX0.3DnEv90KltUB-omfR07o3HOnOdrioV3JGbHDAoNx-Hc
+metaSortKey: -1673986761230.75
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global
