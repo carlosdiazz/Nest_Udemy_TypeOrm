@@ -25,6 +25,7 @@ export class User {
   @Column({ type: 'bool', default: true })
   isActive: boolean;
 
+  //TODO popner que solo se puedan insertar de la enumeracion que ya tengo
   @Column({ type: 'varchar', array: true, default: ['user'] })
   roles: string[];
 
