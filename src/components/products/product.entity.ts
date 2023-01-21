@@ -5,10 +5,14 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
-  BeforeInsert,
+  //BeforeInsert,
   OneToMany,
+  ManyToOne,
+  JoinColumn,
 } from 'typeorm';
+
 import { ProductImage } from './product_image.entity';
+import { User } from '../auth/entities/user.entity';
 
 @Entity({ name: 'products' })
 export class Product {
@@ -45,6 +49,10 @@ export class Product {
     eager: true,
   })
   images?: ProductImage[];
+
+  @ManyToOne(() => User, (user) => user.product, { eager: true })
+  @JoinColumn({ name: 'user_id' })
+  user: User;
 
   @Exclude()
   @CreateDateColumn({

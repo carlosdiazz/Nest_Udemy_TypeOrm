@@ -1,0 +1,30 @@
+_id: req_b10b2d8050da4d53995ff65e75108f14
+type: Request
+parentId: fld_74e94500d1fa41d1959a314f80adb5c5
+modified: 1674161986767
+created: 1674161968747
+url: "{{ _.URL }}/auth/register"
+name: RegisterUser
+description: ""
+method: POST
+body:
+  mimeType: application/json
+  text: |-
+    {
+    	"email":"c.diazadrian@hotmail.com",
+    	"password":"1DEenero",
+    	"fullName":"Carlos Diaz"
+    }
+parameters: []
+headers:
+  - name: Content-Type
+    value: application/json
+authentication: {}
+metaSortKey: -1673811693902.5
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

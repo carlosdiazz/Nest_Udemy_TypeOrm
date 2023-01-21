@@ -1,9 +1,11 @@
 import { Exclude } from 'class-transformer';
+import { Product } from '../../../components/products/product.entity';
 import {
   BeforeInsert,
   BeforeUpdate,
   Column,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -25,8 +27,12 @@ export class User {
   @Column({ type: 'bool', default: true })
   isActive: boolean;
 
+  //TODO popner que solo se puedan insertar de la enumeracion que ya tengo
   @Column({ type: 'varchar', array: true, default: ['user'] })
   roles: string[];
+
+  @OneToMany(() => Product, (product) => product.user)
+  product: Product;
 
   @BeforeInsert()
   checkEmail() {
