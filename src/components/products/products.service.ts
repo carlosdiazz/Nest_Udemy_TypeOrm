@@ -14,6 +14,7 @@ import {
 } from './product.dto';
 import { Product } from './product.entity';
 import { ProductImage } from './product_image.entity';
+import { User } from '../auth/entities/user.entity';
 
 @Injectable()
 export class ProductsService {
@@ -28,7 +29,7 @@ export class ProductsService {
     private readonly dataSource: DataSource,
   ) {}
 
-  async create(data: CreateProductDto) {
+  async create(data: CreateProductDto, user: User) {
     try {
       const { images = [], ...productDetails } = data;
 
@@ -37,6 +38,7 @@ export class ProductsService {
         images: images.map((image) =>
           this.productImageRepository.create({ url: image }),
         ),
+        user,
       });
       return await this.productRepository.save(newProduct);
     } catch (error) {
@@ -51,7 +53,7 @@ export class ProductsService {
 
   async findAll(params: PaginationDto) {
     const { limit = 5, offset = 0 } = params;
-    return this.productRepository.findAndCount({
+    return await this.productRepository.find({
       take: limit,
       skip: offset,
       relations: {
@@ -71,7 +73,7 @@ export class ProductsService {
   }
 
   //Aqui manejo la actualizacion con QueryRunner, ejecuto las operaciones y si todo sale bien, la aplico, si algo fallo doy para atras a todo
-  async update(id: string, updateProductDto: UpdateProductDto) {
+  async update(id: string, updateProductDto: UpdateProductDto, user: User) {
     //const product = await this.findOne(id);
     //try {
     //  this.productRepository.merge(product, {
@@ -89,6 +91,7 @@ export class ProductsService {
     const product = await this.productRepository.preload({
       id: id,
       ...toUpdate,
+      user: user,
     });
     if (!product) throw new NotFoundException();
 

@@ -8,6 +8,7 @@ import {
 } from '@nestjs/common';
 import { Observable } from 'rxjs';
 import { META_ROLES } from '../../decorator/role-protected.decorator';
+import { IS_PUBLIC } from '../../decorator/Public-router.decorator';
 
 @Injectable()
 export class UserRoleGuard implements CanActivate {
@@ -27,6 +28,15 @@ export class UserRoleGuard implements CanActivate {
       return true;
     }
     if (validRoles.length === 0) return true;
+
+    const isPublic: string = this.reflector.get(
+      IS_PUBLIC,
+      context.getHandler(),
+    );
+
+    if (isPublic) {
+      return true;
+    }
 
     //Aqui obtengo el user del Req
     const request = context.switchToHttp().getRequest();

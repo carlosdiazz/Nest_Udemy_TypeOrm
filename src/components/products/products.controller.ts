@@ -16,17 +16,20 @@ import {
   PaginationDto,
 } from './product.dto';
 import { Auth } from '../auth/decorator/auth.decorator';
-
-@Auth()
+import { PublicRouter } from '../auth/decorator/Public-router.decorator';
+import { ValidRoles } from '../auth/interface/valid_roles';
+import { GetUser } from '../auth/decorator/get_user.decorator';
+import { User } from '../auth/entities/user.entity';
 @Controller('products')
 export class ProductsController {
   constructor(private readonly productsService: ProductsService) {}
-
+  @Auth(ValidRoles.ADMIN)
   @Post()
-  create(@Body() createProductDto: CreateProductDto) {
-    return this.productsService.create(createProductDto);
+  create(@Body() createProductDto: CreateProductDto, @GetUser() user: User) {
+    return this.productsService.create(createProductDto, user);
   }
 
+  @PublicRouter()
   @Get()
   findAll(@Query() params: PaginationDto) {
     return this.productsService.findAll(params);
@@ -41,8 +44,9 @@ export class ProductsController {
   update(
     @Param('id', ParseUUIDPipe) id: string,
     @Body() updateProductDto: UpdateProductDto,
+    @GetUser() user: User,
   ) {
-    return this.productsService.update(id, updateProductDto);
+    return this.productsService.update(id, updateProductDto, user);
   }
 
   @Delete(':id')
