@@ -29,7 +29,11 @@ export class AuthService {
         password: bcrypt.hashSync(password, 10),
       });
       //TODO retorna JWT
-      return await this.userRepository.save(newUser);
+      const userSaved = await this.userRepository.save(newUser);
+      const token = this.getJwtToken({ id: userSaved.id });
+      return {
+        token: token,
+      };
     } catch (error) {
       this.logger.error(error?.message);
       throw new BadRequestException(error?.message);
@@ -46,7 +50,7 @@ export class AuthService {
         id: true,
       },
     });
-    console.log(user);
+    //console.log(user);
     if (!user) {
       throw new NotFoundException('Este user no existe');
     }
@@ -59,5 +63,12 @@ export class AuthService {
   private getJwtToken(payload: JwtPayload) {
     const token = this.jwtService.sign(payload);
     return token;
+  }
+
+  async checkAuthStatus(user: User) {
+    return {
+      ...user,
+      token: this.getJwtToken({ id: user.id }),
+    };
   }
 }

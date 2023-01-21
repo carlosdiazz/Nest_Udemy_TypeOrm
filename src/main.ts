@@ -1,10 +1,14 @@
 import { NestFactory, Reflector } from '@nestjs/core';
 import { ValidationPipe, ClassSerializerInterceptor } from '@nestjs/common';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 import { AppModule } from './app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
+  //Aqui todas las ruta comenzaran con api
+  //app.setGlobalPrefix('api');
 
   app.useGlobalPipes(
     new ValidationPipe({
@@ -18,6 +22,16 @@ async function bootstrap() {
   );
   app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
   app.enableCors();
+
+  const config = new DocumentBuilder()
+    .setTitle('Udemy Nest Course')
+    .setDescription('Carlos prueba de Nest')
+    .setVersion('1.0')
+    //.addTag('cats')
+    .build();
+  const document = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('api', app, document);
+
   await app.listen(process.env.PORT || 3000, () => {
     console.log(
       `👍El server esta arriba en el puerto: ${process.env.PORT || 3000} 👍💪`,

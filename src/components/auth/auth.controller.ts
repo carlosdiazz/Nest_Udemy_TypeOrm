@@ -8,6 +8,7 @@ import {
   SetMetadata,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { ApiTags } from '@nestjs/swagger';
 
 import { AuthService } from './auth.service';
 import { CreateUserDto, LoginUserDto } from './dto/user.dto';
@@ -19,6 +20,7 @@ import { RoleProtected } from './decorator/role-protected.decorator';
 import { ValidRoles } from './interface/valid_roles';
 import { Auth } from './decorator/auth.decorator';
 
+@ApiTags('Auth')
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
@@ -31,6 +33,12 @@ export class AuthController {
   @Post('login')
   login(@Body() loginUserDto: LoginUserDto) {
     return this.authService.login(loginUserDto);
+  }
+
+  @Get('check-auth-status')
+  @Auth()
+  checkAuthStatus(@GetUser() user: User) {
+    return this.authService.checkAuthStatus(user);
   }
 
   @Get('private')

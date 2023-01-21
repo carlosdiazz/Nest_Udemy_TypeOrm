@@ -44,6 +44,7 @@ $ docker-compose up -d
   - npm install --save @nestjs/passport passport 
   - npm install --save @nestjs/jwt passport-jwt
   - npm install --save-dev @types/passport-jwt
+  - npm install --save @nestjs/swagger
 
 ## Todos los pasos
 

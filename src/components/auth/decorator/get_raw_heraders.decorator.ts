@@ -9,7 +9,7 @@ export const GetRawHeaders = createParamDecorator(
     //console.log(data);
     const req = ctx.switchToHttp().getRequest();
     const rawHeaders = req.rawHeaders;
-    console.log(rawHeaders);
+    //console.log(rawHeaders);
     if (!rawHeaders) {
       throw new InternalServerErrorException('rawHeaders not found Request');
     }
