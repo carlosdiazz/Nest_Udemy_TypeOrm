@@ -45,7 +45,7 @@ export class AuthService {
     const user = await this.userRepository.findOne({
       where: { email },
       select: {
-        password: false,
+        password: true,
         email: false,
         id: true,
       },
@@ -54,6 +54,10 @@ export class AuthService {
     if (!user) {
       throw new NotFoundException('Este user no existe');
     }
+    if (!bcrypt.compareSync(password, user.password)) {
+      throw new NotFoundException('Datos Invalidos');
+    }
+    user.password = undefined;
     return {
       ...user,
       token: this.getJwtToken({ id: user.id }),
