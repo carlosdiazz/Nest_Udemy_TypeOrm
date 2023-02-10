@@ -7,6 +7,7 @@ import { config, enviroments, validationENV } from './config/config';
 import { ProductsModule } from './components/products/products.module';
 import { FilesModule } from './components/files/files.module';
 import { AuthModule } from './components/auth/auth.module';
+import { MessagesWsModule } from './components/messages-ws/messages-ws.module';
 
 @Module({
   imports: [
@@ -43,6 +44,7 @@ import { AuthModule } from './components/auth/auth.module';
     ProductsModule,
     FilesModule,
     AuthModule,
+    MessagesWsModule,
   ],
 })
 export class AppModule {}
