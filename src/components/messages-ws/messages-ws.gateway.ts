@@ -4,6 +4,7 @@ import {
   SubscribeMessage,
   WebSocketGateway,
   WebSocketServer,
+  WsException,
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
 import { JwtService } from '@nestjs/jwt';
@@ -11,6 +12,7 @@ import { JwtService } from '@nestjs/jwt';
 //PROPIO+
 import { MessagesWsService } from './messages-ws.service';
 import { NewMessageDto } from './dto/new_message.dto';
+import { JwtPayload } from '../auth/interface/jwt_payload.interface';
 
 //namespace: '/products'
 @WebSocketGateway({ cors: true })
@@ -23,10 +25,21 @@ export class MessagesWsGateway
     private readonly messagesWsService: MessagesWsService,
     private readonly jwtService: JwtService,
   ) {}
-  handleConnection(client: Socket, ...args: any[]) {
+  async handleConnection(client: Socket, ...args: any[]) {
     const token = client.handshake.headers.authentication as string;
-    console.log({ token });
-    this.messagesWsService.registerClient(client);
+    //console.log({ token });
+    let payload: JwtPayload;
+
+    try {
+      payload = this.jwtService.verify(token);
+      await this.messagesWsService.registerClient(client, payload.id);
+    } catch (error) {
+      client.disconnect();
+      //throw new WsException('TOken invalid');
+      return;
+    }
+    console.log({ payload });
+    //this.messagesWsService.registerClient(client, payload.id);
     //console.log(
     //  `Clientes conectados ${this.messagesWsService.getConnectedClients()}`,
     //);
@@ -67,7 +80,7 @@ export class MessagesWsGateway
     //! });
 
     this.wss.emit('message-from-server', {
-      fullName: 'Soy Serve2 ',
+      fullName: this.messagesWsService.getUserFullName(client.id),
       message: payload.message || 'no-message',
     });
   }
